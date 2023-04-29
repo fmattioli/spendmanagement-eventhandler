@@ -5,6 +5,7 @@ This application has te purpose to read events from a topic and save it on a nos
 > https://github.com/fmattioli/spendmanagement-api <br/>
 > https://github.com/fmattioli/spendmanagement-domain <br/>
 > https://github.com/fmattioli/spendmanagement-eventsourcing <br/>
+> https://github.com/fmattioli/spendmanagement-eventhandler <br/>
 
 # Related packages
 > https://github.com/fmattioli/spendmanagement-contracts <br/>
