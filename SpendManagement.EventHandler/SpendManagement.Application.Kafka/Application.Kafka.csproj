@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="KafkaFlow" Version="2.2.16" />
+    <PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" Version="2.2.16" />
+    <PackageReference Include="KafkaFlow.TypedHandler" Version="2.2.16" />
+    <PackageReference Include="SpendManagement.Contracts" Version="1.0.2" />
+  </ItemGroup>
+
+</Project>
