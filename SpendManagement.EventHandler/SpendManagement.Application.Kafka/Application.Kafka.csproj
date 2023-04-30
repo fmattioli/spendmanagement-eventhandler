@@ -13,4 +13,8 @@
     <PackageReference Include="SpendManagement.Contracts" Version="1.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Data\Data.csproj" />
+  </ItemGroup>
+
 </Project>

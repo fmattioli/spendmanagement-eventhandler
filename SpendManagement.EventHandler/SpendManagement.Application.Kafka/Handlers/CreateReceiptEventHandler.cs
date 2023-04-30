@@ -1,4 +1,6 @@
-﻿using KafkaFlow;
+﻿using Application.Kafka.Mappers;
+using Domain.Interfaces;
+using KafkaFlow;
 using KafkaFlow.TypedHandler;
 using SpendManagement.Contracts.V1.Events;
 
@@ -6,9 +8,17 @@ namespace Application.Kafka.Handlers
 {
     public class CreateReceiptEventHandler : IMessageHandler<CreatedReceiptEvent>
     {
-        public Task Handle(IMessageContext context, CreatedReceiptEvent message)
+        private readonly IReceiptRepository _receiptRepository;
+
+        public CreateReceiptEventHandler(IReceiptRepository receiptRepository)
         {
-            throw new NotImplementedException();
+            _receiptRepository = receiptRepository;
+        }
+
+        public async Task Handle(IMessageContext context, CreatedReceiptEvent message)
+        {
+            var domainEntity = message.ToDomain();
+            await _receiptRepository.AddOne(domainEntity);
         }
     }
 }

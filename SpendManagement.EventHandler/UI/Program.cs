@@ -3,9 +3,9 @@ using Crosscutting.Models;
 using CrossCutting.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,9 +23,11 @@ builder.Host.ConfigureAppConfiguration((hosting, config) =>
 
 var applicationSettings = builder.Configuration.GetSection("Settings").Get<Settings>();
 
+builder.Services.AddSingleton<ISettings>(applicationSettings ?? throw new Exception("Error while reading app settings."));
 
 builder.Services
     .AddKafka(applicationSettings.KafkaSettings)
+    .AddMongo(applicationSettings.MongoSettings)
     .AddRepositories()
     .AddLoggingDependency();
 

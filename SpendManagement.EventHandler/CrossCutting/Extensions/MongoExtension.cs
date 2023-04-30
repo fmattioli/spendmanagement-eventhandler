@@ -11,6 +11,7 @@ namespace CrossCutting.Extensions
     {
         public static IServiceCollection AddMongo(this IServiceCollection services, MongoSettings mongoSettings)
         {
+
             services.AddSingleton<IMongoClient>(sp =>
             {
                 return new MongoClient(mongoSettings.ConnectionString);

@@ -73,11 +73,12 @@ namespace CrossCutting.Extensions
             builder.AddConsumer(
                 consumer => consumer
                      .Topics(KafkaTopics.Events.ReceiptEventTopicName)
-                     .WithGroupId("Receipts-Commands")
-                     .WithName("Receipt-Commands")
-                     .WithBufferSize(settings?.BufferSize ?? 0)
+                     .WithGroupId("receipts-events")
+                     .WithName("Receipt events")
                      .WithWorkersCount(settings?.WorkerCount ?? 0)
+                     .WithBufferSize(settings?.BufferSize ?? 0)
                      .WithAutoOffsetReset(KafkaFlow.AutoOffsetReset.Latest)
+                     .WithInitialState(Enum.Parse<ConsumerInitialState>(settings?.ConsumerInitialState))
                      .AddMiddlewares(
                         middlewares =>
                             middlewares
