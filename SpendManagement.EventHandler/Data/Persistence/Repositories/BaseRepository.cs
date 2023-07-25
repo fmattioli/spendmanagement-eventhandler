@@ -1,5 +1,4 @@
 ﻿using Domain.Interfaces;
-
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 
