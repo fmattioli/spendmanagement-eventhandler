@@ -1,4 +1,4 @@
-﻿using Application.Kafka.Handlers;
+﻿using Application.Kafka.Handlers.Receipt;
 using Crosscutting.HostedService;
 using Crosscutting.Middlewares;
 using Crosscutting.Models;
@@ -73,12 +73,12 @@ namespace CrossCutting.Extensions
             builder.AddConsumer(
                 consumer => consumer
                      .Topics(KafkaTopics.Events.ReceiptEventTopicName)
-                     .WithGroupId("receipts-events")
+                     .WithGroupId("Receipts-Events")
                      .WithName("Receipt events")
-                     .WithWorkersCount(settings?.WorkerCount ?? 0)
                      .WithBufferSize(settings?.BufferSize ?? 0)
-                     .WithAutoOffsetReset(KafkaFlow.AutoOffsetReset.Latest)
-                     .WithInitialState(Enum.Parse<ConsumerInitialState>(settings?.ConsumerInitialState))
+                     .WithWorkersCount(settings?.WorkerCount ?? 0)
+                     .WithAutoOffsetReset(AutoOffsetReset.Latest)
+                     .WithInitialState(Enum.Parse<ConsumerInitialState>(settings?.ConsumerInitialState ?? "Running"))
                      .AddMiddlewares(
                         middlewares =>
                             middlewares
@@ -88,7 +88,7 @@ namespace CrossCutting.Extensions
                             .AddTypedHandlers(
                                 h => h
                                     .WithHandlerLifetime(InstanceLifetime.Scoped)
-                                    .AddHandler<CreateReceiptEventHandler>()
+                                    .AddHandlersFromAssemblyOf<CreateReceiptEventHandler>()
                                     )
                             )
                      );

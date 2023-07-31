@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="KafkaFlow" Version="2.2.16" />
-    <PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" Version="2.2.16" />
-    <PackageReference Include="KafkaFlow.TypedHandler" Version="2.2.16" />
-    <PackageReference Include="SpendManagement.Contracts" Version="1.0.2" />
+    <PackageReference Include="KafkaFlow" Version="2.4.0" />
+    <PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" Version="2.4.0" />
+    <PackageReference Include="KafkaFlow.TypedHandler" Version="2.4.0" />
+    <PackageReference Include="SpendManagement.Contracts" Version="1.0.9" />
   </ItemGroup>
 
   <ItemGroup>

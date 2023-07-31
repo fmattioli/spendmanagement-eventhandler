@@ -1,7 +1,5 @@
 ﻿using Data.Persistence.Repositories;
-
 using Domain.Interfaces;
-
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CrossCutting.Extensions
@@ -10,7 +8,8 @@ namespace CrossCutting.Extensions
     {
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            services.AddTransient<IReceiptRepository, ReceiptRepository>();
+            services.AddScoped<IReceiptRepository, ReceiptRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             return services;
         }
     }

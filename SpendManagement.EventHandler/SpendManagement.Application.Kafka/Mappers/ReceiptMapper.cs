@@ -1,5 +1,5 @@
 ﻿using Domain.Entities;
-using SpendManagement.Contracts.V1.Events;
+using SpendManagement.Contracts.V1.Events.ReceiptEvents;
 
 namespace Application.Kafka.Mappers
 {
@@ -8,16 +8,18 @@ namespace Application.Kafka.Mappers
         public static Receipt ToDomain(this CreatedReceiptEvent createReceiptCommand)
         {
             return new Receipt(
-                createReceiptCommand.Id,
-                createReceiptCommand.EstablishmentName,
-                createReceiptCommand.ReceiptDate,
-                createReceiptCommand.ReceiptItems.Select(x => new Domain.ValueObjects.ReceiptItem
+                createReceiptCommand.Receipt.Id,
+                createReceiptCommand.Receipt.EstablishmentName,
+                createReceiptCommand.Receipt.ReceiptDate,
+                createReceiptCommand.ReceiptItem.Select(x => new Domain.ValueObjects.ReceiptItem
                 {
                     Id = x.Id,
+                    CategoryId = x.CategoryId,
                     ItemName = x.ItemName,
                     ItemPrice = x.ItemPrice,
                     Observation = x.Observation,
-                    Quantity = x.Quantity
+                    Quantity = x.Quantity,
+                    TotalPrice = x.TotalPrice
                 })
             );
         }

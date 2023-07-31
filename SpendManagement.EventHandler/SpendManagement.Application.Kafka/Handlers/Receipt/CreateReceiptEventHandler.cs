@@ -2,9 +2,9 @@
 using Domain.Interfaces;
 using KafkaFlow;
 using KafkaFlow.TypedHandler;
-using SpendManagement.Contracts.V1.Events;
+using SpendManagement.Contracts.V1.Events.ReceiptEvents;
 
-namespace Application.Kafka.Handlers
+namespace Application.Kafka.Handlers.Receipt
 {
     public class CreateReceiptEventHandler : IMessageHandler<CreatedReceiptEvent>
     {
