@@ -1,5 +1,7 @@
 ﻿using Domain.ValueObjects;
 
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace Domain.Entities
 {
     public class Receipt
@@ -12,6 +14,7 @@ namespace Domain.Entities
             ReceiptItems = receiptItems;
         }
 
+        [BsonId]
         public Guid Id { get; set; }
         public string EstablishmentName { get; set; }
         public DateTime ReceiptDate { get; set; }

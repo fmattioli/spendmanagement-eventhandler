@@ -10,7 +10,8 @@
     <PackageReference Include="KafkaFlow" Version="2.4.0" />
     <PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" Version="2.4.0" />
     <PackageReference Include="KafkaFlow.TypedHandler" Version="2.4.0" />
-    <PackageReference Include="SpendManagement.Contracts" Version="1.0.9" />
+    <PackageReference Include="Serilog" Version="3.0.1" />
+    <PackageReference Include="SpendManagement.Contracts" Version="2.0.4" />
   </ItemGroup>
 
   <ItemGroup>

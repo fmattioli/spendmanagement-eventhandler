@@ -23,5 +23,24 @@ namespace Application.Kafka.Mappers
                 })
             );
         }
+
+        public static Receipt ToDomain(this UpdateReceiptEvent updateReceiptEvent)
+        {
+            return new Receipt(
+                updateReceiptEvent.Receipt.Id,
+                updateReceiptEvent.Receipt.EstablishmentName,
+                updateReceiptEvent.Receipt.ReceiptDate,
+                updateReceiptEvent.ReceiptItems.Select(x => new Domain.ValueObjects.ReceiptItem
+                {
+                    Id = x.Id,
+                    CategoryId = x.CategoryId,
+                    ItemName = x.ItemName,
+                    ItemPrice = x.ItemPrice,
+                    Observation = x.Observation,
+                    Quantity = x.Quantity,
+                    TotalPrice = x.TotalPrice
+                })
+            );
+        }
     }
 }
