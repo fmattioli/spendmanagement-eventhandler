@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities
+﻿using MongoDB.Bson.Serialization.Attributes;
+
+namespace Domain.Entities
 {
     public class Category
     {
@@ -9,6 +11,7 @@
             CreatedDate = createdDate;
         }
 
+        [BsonId]
         public Guid Id { get; set; }
         public string Name { get; set; }
         public DateTime CreatedDate { get; set; }
