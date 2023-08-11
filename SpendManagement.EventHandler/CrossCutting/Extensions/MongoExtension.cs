@@ -19,8 +19,6 @@ namespace CrossCutting.Extensions
 
             services.AddSingleton(sp =>
             {
-                BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
-                BsonDefaults.GuidRepresentationMode = GuidRepresentationMode.V3;
                 var mongoClient = sp.GetService<IMongoClient>() ?? throw new Exception("MongoDB was not injectable.");
                 var db = mongoClient.GetDatabase(mongoSettings.Database);
                 return db;
