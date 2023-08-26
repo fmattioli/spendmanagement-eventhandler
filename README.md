@@ -6,7 +6,7 @@ This application has the purpose to read events from a topic and save it on a No
 > https://github.com/fmattioli/spendmanagement-api <br/>
 > https://github.com/fmattioli/spendmanagement-domain <br/>
 > https://github.com/fmattioli/spendmanagement-readmodel <br/>
-> https://github.com/fmattioli/spendmanagement-indentity <br/>
+> https://github.com/fmattioli/spendmanagement-identity <br/>
 > https://github.com/fmattioli/spendmanagement-eventsourcing <br/>
 
 # Related packages
