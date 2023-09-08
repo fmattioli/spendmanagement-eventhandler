@@ -2,6 +2,7 @@
 using Crosscutting.HostedService;
 using Crosscutting.Middlewares;
 using Crosscutting.Models;
+using CrossCutting.Extensions.Kafka;
 using KafkaFlow;
 using KafkaFlow.Admin.Dashboard;
 using KafkaFlow.Configuration;
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using SpendManagement.Topics;
 
-namespace CrossCutting.Extensions
+namespace CrossCutting.Extensions.Kafka
 {
     public static class KafkaExtension
     {
@@ -51,16 +52,16 @@ namespace CrossCutting.Extensions
                     .WithBrokers(settings.Sasl_Brokers)
                     .WithSecurityInformation(si =>
                     {
-                        si.SecurityProtocol = KafkaFlow.Configuration.SecurityProtocol.SaslSsl;
+                        si.SecurityProtocol = SecurityProtocol.SaslSsl;
                         si.SaslUsername = settings.Sasl_UserName;
                         si.SaslPassword = settings.Sasl_Password;
-                        si.SaslMechanism = KafkaFlow.Configuration.SaslMechanism.Plain;
+                        si.SaslMechanism = SaslMechanism.Plain;
                         si.SslCaLocation = string.Empty;
                     });
             }
             else
             {
-                builder.WithBrokers(new[] { settings?.Brokers });
+                builder.WithBrokers(new[] { settings?.Broker });
             }
 
             return builder;
@@ -95,6 +96,5 @@ namespace CrossCutting.Extensions
 
             return builder;
         }
-
     }
 }

@@ -1,4 +1,4 @@
-﻿using Crosscutting.Extensions;
+﻿using CrossCutting.Extensions.Kafka;
 using KafkaFlow;
 using Newtonsoft.Json;
 using Serilog;

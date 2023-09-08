@@ -1,5 +1,5 @@
-﻿using Crosscutting.Extensions;
-using Crosscutting.Models;
+﻿using Crosscutting.Models;
+using CrossCutting.Extensions.Kafka;
 using KafkaFlow;
 using Polly;
 using Serilog;

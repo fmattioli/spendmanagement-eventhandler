@@ -2,7 +2,7 @@
 using Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CrossCutting.Extensions
+namespace CrossCutting.Extensions.Repositories
 {
     public static class RepositoriesExtensions
     {
