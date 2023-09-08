@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.Text;
 
-namespace Crosscutting.Extensions
+namespace CrossCutting.Extensions.Kafka
 {
     public static class MessageMiddlewareExtensions
     {

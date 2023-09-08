@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.Kafka" Version="6.0.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="6.0.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="6.0.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="6.0.2" />
     <PackageReference Include="KafkaFlow" Version="2.4.0" />
     <PackageReference Include="KafkaFlow.Abstractions" Version="2.4.0" />
     <PackageReference Include="KafkaFlow.Admin" Version="2.4.0" />
