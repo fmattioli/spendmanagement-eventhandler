@@ -85,6 +85,7 @@ namespace CrossCutting.Extensions.Kafka
                             middlewares
                             .AddSerializer<JsonCoreSerializer>()
                             .Add<ConsumerLoggingMiddleware>()
+                            .Add<ConsumerTracingMiddleware>()
                             .Add<ConsumerRetryMiddleware>()
                             .AddTypedHandlers(
                                 h => h
