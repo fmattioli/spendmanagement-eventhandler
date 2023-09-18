@@ -9,7 +9,7 @@ using Serilog;
 
 namespace Application.Kafka.Handlers.Category
 {
-    public class CreateCategoryEventHandler : 
+    public class CreateCategoryEventHandler :
         IMessageHandler<CreateCategoryEvent>,
         IMessageHandler<UpdateCategoryEvent>,
         IMessageHandler<DeleteCategoryEvent>
@@ -25,7 +25,7 @@ namespace Application.Kafka.Handlers.Category
 
             await _categoryRepository.AddOne(categoryDomain);
 
-            _logger.Information($"Category created with sucessfully on database");
+            _logger.Information("Category created with sucessfully on database");
         }
 
         public async Task Handle(IMessageContext context, UpdateCategoryEvent message)
@@ -35,9 +35,9 @@ namespace Application.Kafka.Handlers.Category
             var filter = new FilterDefinitionBuilder<Domain.Entities.Category>()
                 .Where(m => m.Id == categoryDomain.Id);
 
-            await _categoryRepository.ReplaceOneAsync(dm => filter.Inject(), categoryDomain);
+            await _categoryRepository.ReplaceOneAsync(_ => filter.Inject(), categoryDomain);
 
-            _logger.Information($"Category updated with sucessfully on database");
+            _logger.Information("Category updated with sucessfully on database");
         }
 
         public async Task Handle(IMessageContext context, DeleteCategoryEvent message)
@@ -45,9 +45,9 @@ namespace Application.Kafka.Handlers.Category
             var filter = new FilterDefinitionBuilder<Domain.Entities.Category>()
                 .Where(ev => ev.Id == message.Id);
 
-            await _categoryRepository.DeleteAsync(dm => filter.Inject());
+            await _categoryRepository.DeleteAsync(_ => filter.Inject());
 
-            _logger.Information($"Category deleted with sucessfully on database");
+            _logger.Information("Category deleted with sucessfully on database");
         }
     }
 }
