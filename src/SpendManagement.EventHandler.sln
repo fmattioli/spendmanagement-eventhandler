@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UI", "UI\UI.csproj", "{A6B9
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{D9871377-F8BF-4822-B899-1305DD10CC65}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Kafka", "SpendManagement.Application.Kafka\Application.Kafka.csproj", "{8E9B40EE-2977-4636-8463-4F81D89F7DAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Kafka", "Application.Kafka\Application.Kafka.csproj", "{8E9B40EE-2977-4636-8463-4F81D89F7DAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
