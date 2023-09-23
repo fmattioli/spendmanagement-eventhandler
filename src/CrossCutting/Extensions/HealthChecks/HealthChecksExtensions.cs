@@ -17,7 +17,7 @@ namespace CrossCutting.Extensions.HealthChecks
                 .AddMongoDb(settings.MongoSettings.ConnectionString, name: "MongoDB");
 
             services
-                .AddHealthChecksUI()
+                .AddHealthChecksUI(setupSettings: setup => setup.SetEvaluationTimeInSeconds(60))
                 .AddInMemoryStorage();
 
             return services;

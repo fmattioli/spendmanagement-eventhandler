@@ -37,8 +37,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Application.Kafka\Application.Kafka.csproj" />
     <ProjectReference Include="..\Data\Data.csproj" />
-    <ProjectReference Include="..\SpendManagement.Application.Kafka\Application.Kafka.csproj" />
   </ItemGroup>
 
 </Project>

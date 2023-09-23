@@ -1,0 +1,16 @@
+version: "3.7"
+networks:
+  spendmanagement:
+    external:
+      name: spendmanagement-network
+
+services:
+  eventhandler:
+    container_name: spendmanagement_eventhandler
+    build:
+      context: .
+    image: spendmanagement_eventhandler
+    ports:
+      - 8078:80
+    networks:
+      - spendmanagement
