@@ -15,7 +15,7 @@ builder.Services.AddSingleton<ISettings>(applicationSettings ?? throw new Except
 
 builder.Services
     .AddTracing()
-    //.AddHealthCheckers(applicationSettings)
+    .AddHealthCheckers(applicationSettings)
     .AddKafka(applicationSettings.KafkaSettings)
     .AddMongo(applicationSettings.MongoSettings)
     .AddRepositories()
@@ -24,6 +24,6 @@ builder.Services
 var app = builder.Build();
 
 app.ShowKafkaDashboard();
-//app.UseHealthCheckers();
+app.UseHealthCheckers();
 app.MapGet("/", () => "Hello!");
 app.Run();
