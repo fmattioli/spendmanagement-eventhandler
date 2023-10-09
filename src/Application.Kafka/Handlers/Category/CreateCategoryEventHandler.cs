@@ -15,17 +15,14 @@ namespace Application.Kafka.Handlers.Category
         IMessageHandler<DeleteCategoryEvent>
     {
         private readonly ICategoryRepository _categoryRepository;
-        private readonly ILogger _logger;
 
-        public CreateCategoryEventHandler(ICategoryRepository categoryRepository, ILogger logger) => (_categoryRepository, _logger) = (categoryRepository, logger);
+        public CreateCategoryEventHandler(ICategoryRepository categoryRepository) => _categoryRepository = categoryRepository;
 
         public async Task Handle(IMessageContext context, CreateCategoryEvent message)
         {
             var categoryDomain = message.Category.ToDomain();
 
             await _categoryRepository.AddOne(categoryDomain);
-
-            _logger.Information("Category created with sucessfully on database");
         }
 
         public async Task Handle(IMessageContext context, UpdateCategoryEvent message)
@@ -36,8 +33,6 @@ namespace Application.Kafka.Handlers.Category
                 .Where(m => m.Id == categoryDomain.Id);
 
             await _categoryRepository.ReplaceOneAsync(_ => filter.Inject(), categoryDomain);
-
-            _logger.Information("Category updated with sucessfully on database");
         }
 
         public async Task Handle(IMessageContext context, DeleteCategoryEvent message)
@@ -46,8 +41,6 @@ namespace Application.Kafka.Handlers.Category
                 .Where(ev => ev.Id == message.Id);
 
             await _categoryRepository.DeleteAsync(_ => filter.Inject());
-
-            _logger.Information("Category deleted with sucessfully on database");
         }
     }
 }
