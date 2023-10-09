@@ -15,12 +15,10 @@ namespace Application.Kafka.Handlers.Receipt
         IMessageHandler<DeleteReceiptEvent>
     {
         private readonly IReceiptRepository _receiptRepository;
-        private readonly ILogger _logger;
 
-        public CreateReceiptEventHandler(IReceiptRepository receiptRepository, ILogger logger)
+        public CreateReceiptEventHandler(IReceiptRepository receiptRepository)
         {
             _receiptRepository = receiptRepository;
-            _logger = logger;
         }
 
         public async Task Handle(IMessageContext context, CreatedReceiptEvent message)
@@ -28,8 +26,6 @@ namespace Application.Kafka.Handlers.Receipt
             var domainEntity = message.ToDomain();
 
             await _receiptRepository.AddOne(domainEntity);
-
-            _logger.Information("Receipt created with sucessfully on database");
         }
 
         public async Task Handle(IMessageContext context, UpdateReceiptEvent message)
@@ -40,8 +36,6 @@ namespace Application.Kafka.Handlers.Receipt
                 .Where(m => m.Id == domainEntity.Id);
 
             await _receiptRepository.ReplaceOneAsync(_ => filter.Inject(), domainEntity);
-
-            _logger.Information("Receipt updated with sucessfully on database");
         }
 
         public async Task Handle(IMessageContext context, DeleteReceiptEvent message)
@@ -50,8 +44,6 @@ namespace Application.Kafka.Handlers.Receipt
                 .Where(ev => ev.Id == message.Id);
 
             await _receiptRepository.DeleteAsync(_ => filter.Inject());
-
-            _logger.Information("Receipt deleted with sucessfully on database");
         }
     }
 }
