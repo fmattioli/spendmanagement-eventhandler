@@ -18,7 +18,7 @@ namespace Data.Persistence.Repositories
             _logger = logger;
         }
 
-        public async Task AddOne(TEntity entity)
+        public async Task AddOneAsync(TEntity entity)
         {
             await this.collection.InsertOneAsync(entity);
             _logger.Information("Document createed with successfully {@entity}", entity);

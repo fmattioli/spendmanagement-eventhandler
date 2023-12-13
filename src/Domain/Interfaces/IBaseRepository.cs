@@ -5,7 +5,7 @@ namespace Domain.Interfaces
 {
     public interface IBaseRepository<TEntity> where TEntity : class
     {
-        Task AddOne(TEntity entity);
+        Task AddOneAsync(TEntity entity);
 
         Task ReplaceOneAsync(Expression<Func<TEntity, bool>> filterExpression,
             TEntity entity);
