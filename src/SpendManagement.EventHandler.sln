@@ -21,6 +21,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Kafka", "Application.Kafka\Application.Kafka.csproj", "{8E9B40EE-2977-4636-8463-4F81D89F7DAB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpendManagement.EventHandler.UnitTests", "..\tests\SpendManagement.EventHandler.UnitTests\SpendManagement.EventHandler.UnitTests.csproj", "{9EECB9A1-CBAA-400C-82CA-259D1BB2912E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C8440D9E-8259-474D-B223-DF1108CCCC6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +51,10 @@ Global
 		{8E9B40EE-2977-4636-8463-4F81D89F7DAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E9B40EE-2977-4636-8463-4F81D89F7DAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E9B40EE-2977-4636-8463-4F81D89F7DAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EECB9A1-CBAA-400C-82CA-259D1BB2912E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EECB9A1-CBAA-400C-82CA-259D1BB2912E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EECB9A1-CBAA-400C-82CA-259D1BB2912E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EECB9A1-CBAA-400C-82CA-259D1BB2912E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,6 +65,7 @@ Global
 		{A6B94EC7-DB9F-4F88-9F73-673CC2B49D3A} = {E1651CBC-2E4F-4328-92E5-CAB72A23779F}
 		{D9871377-F8BF-4822-B899-1305DD10CC65} = {3B63A691-9C59-4132-9FE0-D5F802041474}
 		{8E9B40EE-2977-4636-8463-4F81D89F7DAB} = {4C33FA39-57D7-4884-B377-3C6A56D5CA5A}
+		{9EECB9A1-CBAA-400C-82CA-259D1BB2912E} = {C8440D9E-8259-474D-B223-DF1108CCCC6C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B99B0F09-E28E-4C86-93BF-2622B3293BC3}

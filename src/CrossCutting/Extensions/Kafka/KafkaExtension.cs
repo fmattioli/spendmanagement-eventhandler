@@ -7,7 +7,6 @@ using KafkaFlow;
 using KafkaFlow.Admin.Dashboard;
 using KafkaFlow.Configuration;
 using KafkaFlow.Serializer;
-using KafkaFlow.TypedHandler;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using SpendManagement.Topics;
@@ -24,7 +23,7 @@ namespace CrossCutting.Extensions.Kafka
                 .UseConsoleLog()
                 .AddCluster(cluster => cluster
                     .AddBrokers(kafkaSettings)
-                    .AddTelemetry()
+                    .AddTelemetry(kafkaSettings.Environment)
                     .AddConsumers(kafkaSettings)
                     )
                 );
@@ -33,11 +32,14 @@ namespace CrossCutting.Extensions.Kafka
         }
 
         private static IClusterConfigurationBuilder AddTelemetry(
-            this IClusterConfigurationBuilder builder)
+            this IClusterConfigurationBuilder builder,
+            string enviroment)
         {
+            var topic = $"{enviroment}.spendmanagement.receipts.events.telemetry";
+
             builder
-                .EnableAdminMessages(KafkaTopics.Events.ReceiptTelemetry)
-                .EnableTelemetry(KafkaTopics.Events.ReceiptTelemetry);
+                .EnableAdminMessages(topic)
+                .EnableTelemetry(topic);
 
             return builder;
         }
@@ -73,7 +75,7 @@ namespace CrossCutting.Extensions.Kafka
         {
             builder.AddConsumer(
                 consumer => consumer
-                     .Topics(KafkaTopics.Events.ReceiptEventTopicName)
+                     .Topics(KafkaTopics.Events.GetReceiptEvents(settings!.Environment))
                      .WithGroupId("Receipts-Events")
                      .WithName("Receipt events")
                      .WithBufferSize(settings?.BufferSize ?? 0)
@@ -83,14 +85,14 @@ namespace CrossCutting.Extensions.Kafka
                      .AddMiddlewares(
                         middlewares =>
                             middlewares
-                            .AddSerializer<JsonCoreSerializer>()
+                            .AddDeserializer<JsonCoreDeserializer>()
                             .Add<ConsumerLoggingMiddleware>()
                             .Add<ConsumerTracingMiddleware>()
                             .Add<ConsumerRetryMiddleware>()
                             .AddTypedHandlers(
                                 h => h
                                     .WithHandlerLifetime(InstanceLifetime.Scoped)
-                                    .AddHandlersFromAssemblyOf<CreateReceiptEventHandler>()
+                                    .AddHandlersFromAssemblyOf<ReceiptEventHandler>()
                                     )
                             )
                      );

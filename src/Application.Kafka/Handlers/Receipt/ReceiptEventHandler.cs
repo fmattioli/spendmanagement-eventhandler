@@ -1,22 +1,20 @@
 ﻿using Application.Kafka.Mappers;
 using Domain.Interfaces;
 using KafkaFlow;
-using KafkaFlow.TypedHandler;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Serilog;
 using SpendManagement.Contracts.V1.Events.ReceiptEvents;
 
 namespace Application.Kafka.Handlers.Receipt
 {
-    public class CreateReceiptEventHandler :
+    public class ReceiptEventHandler :
         IMessageHandler<CreatedReceiptEvent>,
         IMessageHandler<UpdateReceiptEvent>,
         IMessageHandler<DeleteReceiptEvent>
     {
         private readonly IReceiptRepository _receiptRepository;
 
-        public CreateReceiptEventHandler(IReceiptRepository receiptRepository)
+        public ReceiptEventHandler(IReceiptRepository receiptRepository)
         {
             _receiptRepository = receiptRepository;
         }
@@ -25,7 +23,7 @@ namespace Application.Kafka.Handlers.Receipt
         {
             var domainEntity = message.ToDomain();
 
-            await _receiptRepository.AddOne(domainEntity);
+            await _receiptRepository.AddOneAsync(domainEntity);
         }
 
         public async Task Handle(IMessageContext context, UpdateReceiptEvent message)
