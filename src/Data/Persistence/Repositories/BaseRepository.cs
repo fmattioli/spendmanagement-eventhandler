@@ -10,6 +10,7 @@ namespace Data.Persistence.Repositories
     {
         private readonly IMongoCollection<TEntity> collection;
         private readonly ILogger _logger;
+        private static readonly object registrationLock = new();
 
         public BaseRepository(IMongoDatabase mongoDb, string collectionName, ILogger logger)
         {
@@ -42,11 +43,17 @@ namespace Data.Persistence.Repositories
         {
             if (!BsonClassMap.IsClassMapRegistered(typeof(TEntity)))
             {
-                BsonClassMap.RegisterClassMap<TEntity>(cm =>
+                lock (registrationLock) // Use um objeto de bloqueio para garantir atomicidade
                 {
-                    cm.AutoMap();
-                    cm.SetIgnoreExtraElements(true);
-                });
+                    if (!BsonClassMap.IsClassMapRegistered(typeof(TEntity)))
+                    {
+                        BsonClassMap.RegisterClassMap<TEntity>(cm =>
+                        {
+                            cm.AutoMap();
+                            cm.SetIgnoreExtraElements(true);
+                        });
+                    }
+                }
             }
         }
     }

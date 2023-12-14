@@ -5,6 +5,8 @@ using KafkaFlow;
 using Moq;
 using SpendManagement.Contracts.V1.Events.ReceiptEvents;
 
+using System.Linq.Expressions;
+
 namespace SpendManagement.EventHandler.UnitTests.Handlers.Receipt
 {
     public class DeleteReceiptEventHandler
@@ -35,7 +37,7 @@ namespace SpendManagement.EventHandler.UnitTests.Handlers.Receipt
             //Assert
             _receiptRepository
                .Verify(
-                  x => x.AddOneAsync(It.IsAny<Domain.Entities.Receipt>()),
+                  x => x.DeleteAsync(It.IsAny<Expression<Func<Domain.Entities.Receipt, bool>>>()),
                    Times.Once);
 
             _receiptRepository.VerifyNoOtherCalls();
