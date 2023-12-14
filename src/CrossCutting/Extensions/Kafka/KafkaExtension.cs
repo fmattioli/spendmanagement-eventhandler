@@ -77,7 +77,7 @@ namespace CrossCutting.Extensions.Kafka
                 consumer => consumer
                      .Topics(KafkaTopics.Events.GetReceiptEvents(settings!.Environment))
                      .WithGroupId("Receipts-Events")
-                     .WithName("Receipt events")
+                     .WithName("Receipt-Events")
                      .WithBufferSize(settings?.BufferSize ?? 0)
                      .WithWorkersCount(settings?.WorkerCount ?? 0)
                      .WithAutoOffsetReset(AutoOffsetReset.Latest)
