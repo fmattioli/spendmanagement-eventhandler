@@ -1,10 +1,9 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using SpendManagement.EventHandler.IntegrationTests.Configuration;
 
 namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
 {
-    public class MongoDBFixture
+    public class MongoDBFixture : IAsyncLifetime
     {
         public readonly IMongoDatabase database;
 
@@ -17,6 +16,11 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
             this.database = new MongoClient(mongoUrl).GetDatabase(TestSettings.MongoSettings.Database);
         }
 
+        public Task InitializeAsync()
+        {
+            return Task.CompletedTask;
+        }
+
         public async Task DisposeAsync()
         {
             if (categoryIds.Any())
@@ -26,7 +30,7 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
                 var filter = new FilterDefinitionBuilder<Category>()
                     .In(x => x.Id, categoryIds);
 
-                await collection.DeleteManyAsync(filter);
+                await collection.DeleteOneAsync(filter);
             }
 
             if (receiptIds.Any())
@@ -34,20 +38,18 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
                 var collection = this.database.GetCollection<Receipt>("Receipts");
 
                 var filter = new FilterDefinitionBuilder<Receipt>()
-                    .In(x => x.Id, categoryIds);
+                    .In(x => x.Id, receiptIds);
 
-                await collection.DeleteManyAsync(filter);
+                await collection.DeleteOneAsync(filter);
             }
         }
-
-        public static Task InitializeAsync() => Task.CompletedTask;
 
         public void AddCategoryToCleanUp(Guid id)
         {
             this.categoryIds.Add(id);
         }
 
-        public async Task InsertReceipt(Receipt receipt)
+        public async Task InsertReceiptAsync(Receipt receipt)
         {
             var collection = this.database.GetCollection<Receipt>("Receipts");
             await collection.InsertOneAsync(receipt);
@@ -61,11 +63,18 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
             return category.FirstOrDefault();
         }
 
-        public async Task InsertCategories(IEnumerable<Category>? category)
+        public async Task<Receipt> FindReceiptAsync(Guid categoryId)
         {
+            var collection = this.database.GetCollection<Receipt>("Receipts");
+            var receipt = await collection.FindAsync(receipt => receipt.Id == categoryId);
+            return receipt.FirstOrDefault();
+        }
+
+        public Task InsertCategoryAsync(Category category)
+        {
+            AddCategoryToCleanUp(category.Id);
             var collection = this.database.GetCollection<Category>("Categories");
-            await Task.WhenAll(category!.Select(x => collection.InsertOneAsync(x)));
-            this.categoryIds.AddRange(category!.Select(x => x.Id));
+            return collection.InsertOneAsync(category);
         }
     }
 
