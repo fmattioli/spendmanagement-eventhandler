@@ -1,10 +1,6 @@
 ﻿using AutoFixture;
-
 using FluentAssertions;
-
 using Polly;
-
-using SpendManagement.Contracts.V1.Commands.CategoryCommands;
 using SpendManagement.Contracts.V1.Events.CategoryEvents;
 using SpendManagement.EventHandler.IntegrationTests.Configuration;
 using SpendManagement.EventHandler.IntegrationTests.Fixtures;
@@ -33,6 +29,7 @@ namespace SpendManagement.EventHandler.IntegrationTests.Handlers.Category
             var category = fixture
                 .Build<Contracts.V1.Entities.Category>()
                 .With(x => x.Id, categoryId)
+                .With(x => x.CreatedDate, DateTime.UtcNow)
                 .Create();
 
             var categoryEvent = fixture
