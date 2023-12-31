@@ -7,12 +7,12 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
     {
         public readonly IMongoDatabase database;
 
-        private readonly List<Guid> categoryIds = new();
-        private readonly List<Guid> receiptIds = new();
+        private readonly List<Guid> categoryIds = [];
+        private readonly List<Guid> receiptIds = [];
 
         public MongoDBFixture()
         {
-            var mongoUrl = new MongoUrl(TestSettings.MongoSettings.ConnectionString);
+            var mongoUrl = new MongoUrl(TestSettings.MongoSettings!.ConnectionString);
             this.database = new MongoClient(mongoUrl).GetDatabase(TestSettings.MongoSettings.Database);
         }
 
@@ -23,7 +23,7 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
 
         public async Task DisposeAsync()
         {
-            if (categoryIds.Any())
+            if (categoryIds.Count != 0)
             {
                 var collection = this.database.GetCollection<Category>("Categories");
 
@@ -33,7 +33,7 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
                 await collection.DeleteOneAsync(filter);
             }
 
-            if (receiptIds.Any())
+            if (receiptIds.Count != 0)
             {
                 var collection = this.database.GetCollection<Receipt>("Receipts");
 
