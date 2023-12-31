@@ -16,8 +16,8 @@ namespace SpendManagement.EventHandler.IntegrationTests.Configuration
             KafkaSettings = config.GetSection("KafkaSettings").Get<KafkaSettings>();
             MongoSettings = config.GetSection("MongoSettings").Get<MongoSettings>();
         }
-        public static PollingSettings PollingSettings { get; set; }
-        public static KafkaSettings KafkaSettings { get; }
-        public static MongoSettings MongoSettings { get; }
+        public static PollingSettings? PollingSettings { get; set; }
+        public static KafkaSettings? KafkaSettings { get; }
+        public static MongoSettings? MongoSettings { get; }
     }
 }
