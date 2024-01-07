@@ -1,23 +1,15 @@
 ﻿using Domain.ValueObjects;
-
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Domain.Entities
 {
-    public class Receipt
+    public class Receipt(Guid id, Guid categoryId, string establishmentName, DateTime receiptDate, IEnumerable<ReceiptItem> receiptItems)
     {
-        public Receipt(Guid id, string establishmentName, DateTime receiptDate, IEnumerable<ReceiptItem> receiptItems)
-        {
-            Id = id;
-            EstablishmentName = establishmentName;
-            ReceiptDate = receiptDate;
-            ReceiptItems = receiptItems;
-        }
-
         [BsonId]
-        public Guid Id { get; set; }
-        public string EstablishmentName { get; set; }
-        public DateTime ReceiptDate { get; set; }
-        public IEnumerable<ReceiptItem> ReceiptItems { get; set; }
+        public Guid Id { get; set; } = id;
+        public Guid CategoryId { get; set; } = categoryId;
+        public string EstablishmentName { get; set; } = establishmentName;
+        public DateTime ReceiptDate { get; set; } = receiptDate;
+        public IEnumerable<ReceiptItem> ReceiptItems { get; set; } = receiptItems;
     }
 }
