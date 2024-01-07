@@ -5,10 +5,7 @@ using Serilog;
 
 namespace Data.Persistence.Repositories
 {
-    public class ReceiptRepository : BaseRepository<Receipt>, IReceiptRepository
+    public class ReceiptRepository(IMongoDatabase mongoDb, ILogger _logger) : BaseRepository<Receipt>(mongoDb, "Receipts", _logger), IReceiptRepository
     {
-        public ReceiptRepository(IMongoDatabase mongoDb, ILogger _logger) : base(mongoDb, "Receipts", _logger)
-        {
-        }
     }
 }

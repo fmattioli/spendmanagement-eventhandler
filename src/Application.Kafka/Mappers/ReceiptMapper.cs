@@ -9,12 +9,12 @@ namespace Application.Kafka.Mappers
         {
             return new Receipt(
                 createReceiptCommand.Receipt.Id,
+                createReceiptCommand.Receipt.CategoryId,
                 createReceiptCommand.Receipt.EstablishmentName,
                 createReceiptCommand.Receipt.ReceiptDate,
                 createReceiptCommand.ReceiptItem.Select(x => new Domain.ValueObjects.ReceiptItem
                 {
                     Id = x.Id,
-                    CategoryId = x.CategoryId,
                     ItemName = x.ItemName,
                     ItemPrice = x.ItemPrice,
                     Observation = x.Observation,
@@ -28,12 +28,12 @@ namespace Application.Kafka.Mappers
         {
             return new Receipt(
                 updateReceiptEvent.Receipt.Id,
+                updateReceiptEvent.Receipt.CategoryId,
                 updateReceiptEvent.Receipt.EstablishmentName,
                 updateReceiptEvent.Receipt.ReceiptDate,
                 updateReceiptEvent.ReceiptItems.Select(x => new Domain.ValueObjects.ReceiptItem
                 {
                     Id = x.Id,
-                    CategoryId = x.CategoryId,
                     ItemName = x.ItemName,
                     ItemPrice = x.ItemPrice,
                     Observation = x.Observation,
