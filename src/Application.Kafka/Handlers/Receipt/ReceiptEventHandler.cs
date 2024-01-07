@@ -7,17 +7,12 @@ using SpendManagement.Contracts.V1.Events.ReceiptEvents;
 
 namespace Application.Kafka.Handlers.Receipt
 {
-    public class ReceiptEventHandler :
+    public class ReceiptEventHandler(IReceiptRepository receiptRepository) :
         IMessageHandler<CreatedReceiptEvent>,
         IMessageHandler<UpdateReceiptEvent>,
         IMessageHandler<DeleteReceiptEvent>
     {
-        private readonly IReceiptRepository _receiptRepository;
-
-        public ReceiptEventHandler(IReceiptRepository receiptRepository)
-        {
-            _receiptRepository = receiptRepository;
-        }
+        private readonly IReceiptRepository _receiptRepository = receiptRepository;
 
         public async Task Handle(IMessageContext context, CreatedReceiptEvent message)
         {
