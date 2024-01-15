@@ -80,7 +80,7 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
 
     public record Category(Guid Id, string? Name, DateTime CreatedDate);
 
-    public record Receipt(Guid Id, string? EstablishmentName, DateTime ReceiptDate, IEnumerable<ReceiptItem>? ReceiptItems);
+    public record Receipt(Guid Id, string? EstablishmentName, DateTime ReceiptDate, IEnumerable<ReceiptItem>? ReceiptItems, decimal Discount, decimal Total);
 
-    public record ReceiptItem(Guid Id, Guid CategoryId, string ItemName, short Quantity, decimal ItemPrice, decimal TotalPrice, string Observation);
+    public record ReceiptItem(Guid Id, Guid CategoryId, string ItemName, short Quantity, decimal ItemPrice, decimal TotalPrice, string Observation, decimal DiscountPerItem);
 }
