@@ -7,6 +7,7 @@
         public short Quantity { get; set; }
         public decimal ItemPrice { get; set; }
         public decimal TotalPrice { get; set; }
+        public decimal ItemDiscount { get; set; }
         public string Observation { get; set; } = null!;
     }
 }
