@@ -49,11 +49,16 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
             this.categoryIds.Add(id);
         }
 
+        public void AddReceiptToCleanUp(Guid id)
+        {
+            this.receiptIds.Add(id);
+        }
+
         public async Task InsertReceiptAsync(Receipt receipt)
         {
             var collection = this.database.GetCollection<Receipt>("Receipts");
             await collection.InsertOneAsync(receipt);
-            this.receiptIds.Add(receipt.Id);
+            AddReceiptToCleanUp(receipt.Id);
         }
 
         public async Task<Category> FindCategoryAsync(Guid categoryId)
@@ -70,17 +75,17 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
             return receipt.FirstOrDefault();
         }
 
-        public Task InsertCategoryAsync(Category category)
+        public async Task InsertCategoryAsync(Category category)
         {
             AddCategoryToCleanUp(category.Id);
             var collection = this.database.GetCollection<Category>("Categories");
-            return collection.InsertOneAsync(category);
+            await collection.InsertOneAsync(category);
         }
     }
 
     public record Category(Guid Id, string? Name, DateTime CreatedDate);
 
-    public record Receipt(Guid Id, string? EstablishmentName, DateTime ReceiptDate, IEnumerable<ReceiptItem>? ReceiptItems, decimal Discount, decimal Total);
+    public record Receipt(Guid Id, Guid CategoryId, string? EstablishmentName, DateTime ReceiptDate, IEnumerable<ReceiptItem>? ReceiptItems, decimal Discount, decimal Total);
 
-    public record ReceiptItem(Guid Id, Guid CategoryId, string ItemName, short Quantity, decimal ItemPrice, decimal TotalPrice, string Observation, decimal DiscountPerItem);
+    public record ReceiptItem(Guid Id, string ItemName, short Quantity, decimal ItemPrice, decimal TotalPrice, string Observation, decimal ItemDiscount);
 }

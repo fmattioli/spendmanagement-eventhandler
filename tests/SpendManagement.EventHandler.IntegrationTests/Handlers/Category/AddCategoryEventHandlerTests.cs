@@ -8,23 +8,19 @@ using SpendManagement.EventHandler.IntegrationTests.Fixtures;
 namespace SpendManagement.EventHandler.IntegrationTests.Handlers.Category
 {
     [Collection(nameof(SharedFixtureCollection))]
-    public class AddCategoryEventHandlerTests
+    public class AddCategoryEventHandlerTests(KafkaFixture kafkaFixture, MongoDBFixture monboDBFixture)
     {
         private readonly Fixture fixture = new();
-        private readonly KafkaFixture _kafkaFixture;
-        private readonly MongoDBFixture _mongoDBFixture;
-
-        public AddCategoryEventHandlerTests(KafkaFixture kafkaFixture, MongoDBFixture monboDBFixture)
-        {
-            this._kafkaFixture = kafkaFixture;
-            this._mongoDBFixture = monboDBFixture;
-        }
+        private readonly KafkaFixture _kafkaFixture = kafkaFixture;
+        private readonly MongoDBFixture _mongoDBFixture = monboDBFixture;
 
         [Fact]
         public async Task OnGivenAValidCategory_CreateCategoryEventShouldBeProduced_AndShouldBeConsumedAndInsertedOnDatabase()
         {
             //Arrange
             var categoryId = fixture.Create<Guid>();
+
+            _mongoDBFixture.AddCategoryToCleanUp(categoryId);
 
             var category = fixture
                 .Build<Contracts.V1.Entities.Category>()

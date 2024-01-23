@@ -31,7 +31,7 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
                        .WithBrokers(new[] { settings?.Broker })
                        .CreateTopicIfNotExists(KafkaTopics.Events.GetReceiptEvents(settings!.Environment), 2, 1)
                        .AddProducer<Contracts.V1.Interfaces.IEvent>(
-                        p => p
+                       p => p
                        .DefaultTopic(KafkaTopics.Events.GetReceiptEvents(settings!.Environment))
                        .AddMiddlewares(m => m
                        .AddSerializer<JsonCoreSerializer>())
@@ -42,9 +42,9 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
             this._eventProducer = provider.GetRequiredService<IMessageProducer<Contracts.V1.Interfaces.IEvent>>();
         }
 
-        public Task ProduceEventAsync(Contracts.V1.Interfaces.IEvent message, IMessageHeaders? headers = null)
+        public async Task ProduceEventAsync(Contracts.V1.Interfaces.IEvent message, IMessageHeaders? headers = null)
         {
-            return this._eventProducer.ProduceAsync(message.RoutingKey, message, headers, null);
+            await this._eventProducer.ProduceAsync(message.RoutingKey, message, headers, null);
         }
     }
 }

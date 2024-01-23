@@ -8,17 +8,11 @@ using SpendManagement.EventHandler.IntegrationTests.Fixtures;
 namespace SpendManagement.EventHandler.IntegrationTests.Handlers.Receipt
 {
     [Collection(nameof(SharedFixtureCollection))]
-    public class AddReceiptEventHandlerTests
+    public class AddReceiptEventHandlerTests(KafkaFixture kafkaFixture, MongoDBFixture monboDBFixture)
     {
         private readonly Fixture fixture = new();
-        private readonly KafkaFixture _kafkaFixture;
-        private readonly MongoDBFixture _mongoDBFixture;
-
-        public AddReceiptEventHandlerTests(KafkaFixture kafkaFixture, MongoDBFixture monboDBFixture)
-        {
-            this._kafkaFixture = kafkaFixture;
-            this._mongoDBFixture = monboDBFixture;
-        }
+        private readonly KafkaFixture _kafkaFixture = kafkaFixture;
+        private readonly MongoDBFixture _mongoDBFixture = monboDBFixture;
 
         [Fact]
         public async Task OnGivenAValidReceipt_CreateReceiptEventShouldBeProduced_AndShouldBeConsumedAndInsertedOnDatabase()
@@ -30,6 +24,8 @@ namespace SpendManagement.EventHandler.IntegrationTests.Handlers.Receipt
                 .Build<Contracts.V1.Entities.Receipt>()
                 .With(x => x.Id, receiptId)
                 .Create();
+
+            _mongoDBFixture.AddReceiptToCleanUp(receiptId);
 
             var receiptItems = fixture
                 .Build<Contracts.V1.Entities.ReceiptItem>()
