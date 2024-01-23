@@ -5,7 +5,7 @@ namespace SpendManagement.EventHandler.IntegrationTests.Helpers
 {
     public sealed class KafkaMessageHelper : IMessageMiddleware
     {
-        private readonly Dictionary<Type, List<IMessageContext>> container = new();
+        private readonly Dictionary<Type, List<IMessageContext>> container = [];
 
         public async Task Invoke(IMessageContext context, MiddlewareDelegate next)
         {
@@ -54,7 +54,7 @@ namespace SpendManagement.EventHandler.IntegrationTests.Helpers
         {
             if (!this.container.TryGetValue(type, out var list))
             {
-                list = this.container[type] = new List<IMessageContext>();
+                list = this.container[type] = [];
             }
 
             return list;

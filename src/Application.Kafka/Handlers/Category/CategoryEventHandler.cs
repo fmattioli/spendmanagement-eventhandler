@@ -7,14 +7,12 @@ using SpendManagement.Contracts.V1.Events.CategoryEvents;
 
 namespace Application.Kafka.Handlers.Category
 {
-    public class CategoryEventHandler :
+    public class CategoryEventHandler(ICategoryRepository categoryRepository) :
         IMessageHandler<CreateCategoryEvent>,
         IMessageHandler<UpdateCategoryEvent>,
         IMessageHandler<DeleteCategoryEvent>
     {
-        private readonly ICategoryRepository _categoryRepository;
-
-        public CategoryEventHandler(ICategoryRepository categoryRepository) => _categoryRepository = categoryRepository;
+        private readonly ICategoryRepository _categoryRepository = categoryRepository;
 
         public async Task Handle(IMessageContext context, CreateCategoryEvent message)
         {

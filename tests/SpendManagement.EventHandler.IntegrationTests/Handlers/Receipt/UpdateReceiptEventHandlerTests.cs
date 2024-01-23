@@ -8,17 +8,11 @@ using SpendManagement.EventHandler.IntegrationTests.Fixtures;
 namespace SpendManagement.EventHandler.IntegrationTests.Handlers.Receipt
 {
     [Collection(nameof(SharedFixtureCollection))]
-    public class UpdateReceiptEventHandlerTests
+    public class UpdateReceiptEventHandlerTests(KafkaFixture kafkaFixture, MongoDBFixture monboDBFixture)
     {
         private readonly Fixture fixture = new();
-        private readonly KafkaFixture _kafkaFixture;
-        private readonly MongoDBFixture _mongoDBFixture;
-
-        public UpdateReceiptEventHandlerTests(KafkaFixture kafkaFixture, MongoDBFixture monboDBFixture)
-        {
-            this._kafkaFixture = kafkaFixture;
-            this._mongoDBFixture = monboDBFixture;
-        }
+        private readonly KafkaFixture _kafkaFixture = kafkaFixture;
+        private readonly MongoDBFixture _mongoDBFixture = monboDBFixture;
 
         [Fact]
         public async Task OnGivenAValidReceipt_UpdateReceiptEventShouldBeProduced_AndShouldBeConsumedAndReceiptShouldBeUpdateOnDatabase()
