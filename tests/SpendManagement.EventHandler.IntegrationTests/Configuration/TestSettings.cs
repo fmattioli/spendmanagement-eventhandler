@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-
 using SpendManagement.Domain.Integration.Tests.Configuration;
 
 namespace SpendManagement.EventHandler.IntegrationTests.Configuration
@@ -15,9 +14,11 @@ namespace SpendManagement.EventHandler.IntegrationTests.Configuration
             PollingSettings = config.GetSection("PollingSettings").Get<PollingSettings>();
             KafkaSettings = config.GetSection("KafkaSettings").Get<KafkaSettings>();
             MongoSettings = config.GetSection("MongoSettings").Get<MongoSettings>();
+            SqlSettings = config.GetSection("SqlSettings").Get<SqlSettings>();
         }
         public static PollingSettings? PollingSettings { get; set; }
         public static KafkaSettings? KafkaSettings { get; }
         public static MongoSettings? MongoSettings { get; }
+        public static SqlSettings? SqlSettings { get; }
     }
 }

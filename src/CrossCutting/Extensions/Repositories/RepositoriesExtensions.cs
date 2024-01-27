@@ -10,6 +10,7 @@ namespace CrossCutting.Extensions.Repositories
         {
             services.AddScoped<IReceiptRepository, ReceiptRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ISpendManagementEventRepository, SpendManagementEventRepository>();
             return services;
         }
     }
