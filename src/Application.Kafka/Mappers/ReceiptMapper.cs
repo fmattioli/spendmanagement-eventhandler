@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Newtonsoft.Json;
 using SpendManagement.Contracts.V1.Events.ReceiptEvents;
 
 namespace Application.Kafka.Mappers
@@ -49,6 +50,33 @@ namespace Application.Kafka.Mappers
                 updatedReceiptItems,
                 updateReceiptEvent.Receipt.Discount,
                 updateReceiptEvent.Receipt.Total);
+        }
+
+        public static SpendManagementEvent ToSpendManagementEvent(this CreatedReceiptEvent createReceiptEvent)
+        {
+            return new SpendManagementEvent(
+                createReceiptEvent.RoutingKey,
+                createReceiptEvent.EventCreatedDate,
+                nameof(CreatedReceiptEvent),
+                JsonConvert.SerializeObject(createReceiptEvent));
+        }
+
+        public static SpendManagementEvent ToSpendManagementEvent(this UpdateReceiptEvent updateReceiptEvent)
+        {
+            return new SpendManagementEvent(
+                updateReceiptEvent.RoutingKey,
+                updateReceiptEvent.EventCreatedDate,
+                nameof(UpdateReceiptEvent),
+                JsonConvert.SerializeObject(updateReceiptEvent));
+        }
+
+        public static SpendManagementEvent ToSpendManagementEvent(this DeleteReceiptEvent deleteReceiptEvent)
+        {
+            return new SpendManagementEvent(
+                deleteReceiptEvent.RoutingKey,
+                deleteReceiptEvent.EventCreatedDate,
+                nameof(DeleteReceiptEvent),
+                JsonConvert.SerializeObject(deleteReceiptEvent));
         }
     }
 }

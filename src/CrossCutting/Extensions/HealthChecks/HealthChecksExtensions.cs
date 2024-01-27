@@ -11,10 +11,10 @@ namespace CrossCutting.Extensions.HealthChecks
     {
         public static IServiceCollection AddHealthCheckers(this IServiceCollection services, Settings settings)
         {
-            var configKafka = new ProducerConfig { BootstrapServers = settings.KafkaSettings.Broker };
+            var configKafka = new ProducerConfig { BootstrapServers = settings.KafkaSettings?.Broker };
             services.AddHealthChecks()
                 .AddKafka(configKafka, name: "Kafka")
-                .AddMongoDb(settings.MongoSettings.ConnectionString, name: "MongoDB");
+                .AddMongoDb(settings.MongoSettings?.ConnectionString ?? "", name: "MongoDB");
 
             services
                 .AddHealthChecksUI()

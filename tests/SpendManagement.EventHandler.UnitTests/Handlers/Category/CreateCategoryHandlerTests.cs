@@ -1,5 +1,7 @@
 ﻿using Application.Kafka.Handlers.Category;
 using AutoFixture;
+using Data.Persistence.UnitOfWork;
+using Domain.Entities;
 using Domain.Interfaces;
 using KafkaFlow;
 using Moq;
@@ -13,10 +15,12 @@ namespace SpendManagement.EventHandler.UnitTests.Handlers.Category
         private readonly Mock<ICategoryRepository> _categoryRepository = new();
         private readonly Fixture _fixture = new();
         private readonly Mock<IMessageContext> _messageContext = new();
+        private readonly Mock<ISpendManagementEventRepository> _eventRepository = new();
+        private readonly Mock<IUnitOfWork> _unitOfWork = new();
 
         public CreateCategoryHandlerTests()
         {
-            _categoryHandler = new CategoryEventHandler(_categoryRepository!.Object);
+            _categoryHandler = new CategoryEventHandler(_categoryRepository!.Object, _unitOfWork.Object);
         }
 
         [Fact]
@@ -29,6 +33,10 @@ namespace SpendManagement.EventHandler.UnitTests.Handlers.Category
                 .Setup(x => x.AddOneAsync(It.IsAny<Domain.Entities.Category>()))
                 .Returns(Task.CompletedTask);
 
+            _eventRepository
+                .Setup(x => x.Add(It.IsAny<SpendManagementEvent>()))
+                .ReturnsAsync(_fixture.Create<Guid>());
+
             //Act
             await _categoryHandler.Handle(_messageContext.Object, createCategoryEvent);
 
@@ -38,6 +46,12 @@ namespace SpendManagement.EventHandler.UnitTests.Handlers.Category
                   x => x.AddOneAsync(It.IsAny<Domain.Entities.Category>()),
                    Times.Once);
 
+            _eventRepository
+                .Verify(
+                    x => x.Add(It.IsAny<SpendManagementEvent>()),
+                    Times.Once);
+
+            _eventRepository.VerifyNoOtherCalls();
             _categoryRepository.VerifyNoOtherCalls();
         }
     }

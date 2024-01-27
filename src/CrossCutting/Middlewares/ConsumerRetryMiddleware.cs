@@ -6,20 +6,13 @@ using Serilog;
 
 namespace Crosscutting.Middlewares
 {
-    public class ConsumerRetryMiddleware : IMessageMiddleware
+    public class ConsumerRetryMiddleware(ILogger log, ISettings settings) : IMessageMiddleware
     {
-        private readonly ILogger log;
+        private readonly ILogger log = log ?? throw new ArgumentNullException(nameof(log));
 
-        private readonly int retryCount;
+        private readonly int retryCount = settings.KafkaSettings!.ConsumerRetryCount;
 
-        private readonly TimeSpan retryInterval;
-
-        public ConsumerRetryMiddleware(ILogger log, ISettings settings)
-        {
-            this.log = log ?? throw new ArgumentNullException(nameof(log));
-            this.retryCount = settings.KafkaSettings.ConsumerRetryCount;
-            this.retryInterval = TimeSpan.FromSeconds(settings.KafkaSettings.ConsumerRetryInterval);
-        }
+        private readonly TimeSpan retryInterval = TimeSpan.FromSeconds(settings.KafkaSettings.ConsumerRetryInterval);
 
         public Task Invoke(IMessageContext context, MiddlewareDelegate next)
         {

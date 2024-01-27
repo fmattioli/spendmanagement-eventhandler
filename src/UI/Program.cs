@@ -5,6 +5,7 @@ using CrossCutting.Extensions.Logging;
 using CrossCutting.Extensions.Mongo;
 using CrossCutting.Extensions.Repositories;
 using CrossCutting.Extensions.Tracing;
+using CrossCutting.Extensions.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,8 +29,9 @@ builder.Services.AddSingleton<ISettings>(applicationSettings ?? throw new Except
 builder.Services
     .AddTracing(applicationSettings.TracingSettings)
     .AddHealthCheckers(applicationSettings)
-    .AddKafka(applicationSettings.KafkaSettings)
-    .AddMongo(applicationSettings.MongoSettings)
+    .AddUnitOfWork(applicationSettings.SqlSettings!.ConnectionString!)
+    .AddKafka(applicationSettings.KafkaSettings!)
+    .AddMongo(applicationSettings.MongoSettings!)
     .AddRepositories()
     .AddLoggingDependency();
 
@@ -38,5 +40,5 @@ var app = builder.Build();
 app.ShowKafkaDashboard();
 app.UseHealthCheckers();
 app.MapGet("/", () => "Hello! I'm working. My work is only reading events from a kafka topic, process it, make some logic and save it on a NoSQL database. \n" +
-                      "Check my health to understand if everything is okay." + applicationSettings.KafkaSettings.Sasl_UserName);
+                      "Check my health to understand if everything is okay." + applicationSettings.KafkaSettings!.Sasl_UserName);
 app.Run();
