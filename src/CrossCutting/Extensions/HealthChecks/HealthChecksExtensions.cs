@@ -9,12 +9,15 @@ namespace CrossCutting.Extensions.HealthChecks
 {
     public static class HealthChecksExtensions
     {
+        private static readonly string[] tags = ["db", "data"];
         public static IServiceCollection AddHealthCheckers(this IServiceCollection services, Settings settings)
         {
             var configKafka = new ProducerConfig { BootstrapServers = settings.KafkaSettings?.Broker };
+
             services.AddHealthChecks()
                 .AddKafka(configKafka, name: "Kafka")
-                .AddMongoDb(settings.MongoSettings?.ConnectionString ?? "", name: "MongoDB");
+                .AddSqlServer(settings.SqlSettings!.ConnectionString!, name: "SqlServer", tags: tags)
+                .AddMongoDb(settings.MongoSettings?.ConnectionString ?? "", name: "MongoDB", tags: tags);
 
             services
                 .AddHealthChecksUI()
