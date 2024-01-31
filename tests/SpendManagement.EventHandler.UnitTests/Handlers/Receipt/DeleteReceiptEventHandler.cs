@@ -5,7 +5,9 @@ using Domain.Entities;
 using Domain.Interfaces;
 using KafkaFlow;
 using Moq;
+using Serilog;
 using SpendManagement.Contracts.V1.Events.ReceiptEvents;
+using System.Data;
 using System.Linq.Expressions;
 
 namespace SpendManagement.EventHandler.UnitTests.Handlers.Receipt
@@ -16,12 +18,13 @@ namespace SpendManagement.EventHandler.UnitTests.Handlers.Receipt
         private readonly Mock<IReceiptRepository> _receiptRepository = new();
         private readonly Fixture _fixture = new();
         private readonly Mock<IMessageContext> _messageContext = new();
-        private readonly Mock<IUnitOfWork> _unitOfWork = new();
         private readonly Mock<ISpendManagementEventRepository> _eventRepository = new();
-
+        private readonly Mock<IDbTransaction> _dbTransactionObject = new();
+        private readonly Mock<ILogger> _loggerObjetct = new();
         public DeleteReceiptEventHandler()
         {
-            _receiptEventHandler = new ReceiptEventHandler(_receiptRepository!.Object, _unitOfWork.Object);
+            var unitOfWork = new UnitOfWork(_dbTransactionObject.Object, _loggerObjetct.Object, _eventRepository.Object);
+            _receiptEventHandler = new ReceiptEventHandler(_receiptRepository!.Object, unitOfWork);
         }
 
         [Fact]

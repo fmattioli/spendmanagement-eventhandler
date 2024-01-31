@@ -1,12 +1,13 @@
 ﻿using Application.Kafka.Handlers.Category;
 using AutoFixture;
 using Data.Persistence.UnitOfWork;
-
 using Domain.Entities;
 using Domain.Interfaces;
 using KafkaFlow;
 using Moq;
+using Serilog;
 using SpendManagement.Contracts.V1.Events.CategoryEvents;
+using System.Data;
 using System.Linq.Expressions;
 
 namespace SpendManagement.EventHandler.UnitTests.Handlers.Category
@@ -18,11 +19,13 @@ namespace SpendManagement.EventHandler.UnitTests.Handlers.Category
         private readonly Fixture _fixture = new();
         private readonly Mock<IMessageContext> _messageContext = new();
         private readonly Mock<ISpendManagementEventRepository> _eventRepository = new();
-        private readonly Mock<IUnitOfWork> _unitOfWork = new();
+        private readonly Mock<IDbTransaction> _dbTransactionObject = new();
+        private readonly Mock<ILogger> _loggerObjetct = new();
 
         public DeleteCategoryEventHandlerTests()
         {
-            _categoryHandler = new CategoryEventHandler(_categoryRepository!.Object, _unitOfWork.Object);
+            var unitOfWork = new UnitOfWork(_dbTransactionObject.Object, _loggerObjetct.Object, _eventRepository.Object);
+            _categoryHandler = new CategoryEventHandler(_categoryRepository!.Object, unitOfWork);
         }
 
         [Fact]
