@@ -1,7 +1,7 @@
 {
   "PollingSettings": {
     "RetryCount": 300,
-    "Delay": 200
+    "Delay": 250
   },
   "MongoSettings": {
     "Database": "spendmanagement",
