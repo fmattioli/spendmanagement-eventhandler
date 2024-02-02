@@ -8,11 +8,12 @@ using SpendManagement.EventHandler.IntegrationTests.Fixtures;
 namespace SpendManagement.EventHandler.IntegrationTests.Handlers.Category
 {
     [Collection(nameof(SharedFixtureCollection))]
-    public class UpdateCategoryEventHandlerTests(KafkaFixture kafkaFixture, MongoDBFixture monboDBFixture)
+    public class UpdateCategoryEventHandlerTests(KafkaFixture kafkaFixture, MongoDBFixture monboDBFixture, SqlFixture sqlFixture)
     {
         private readonly Fixture fixture = new();
         private readonly KafkaFixture _kafkaFixture = kafkaFixture;
         private readonly MongoDBFixture _mongoDBFixture = monboDBFixture;
+        private readonly SqlFixture _sqlFixture = sqlFixture;
 
         [Fact]
         public async Task OnGivenAValidCategory_UpdateCategoryEventShouldBeProduced_AndShouldBeConsumedAndCategoryShouldBeUpdateOnDatabase()
@@ -46,6 +47,19 @@ namespace SpendManagement.EventHandler.IntegrationTests.Handlers.Category
             await this._kafkaFixture.ProduceEventAsync(updateCategoryEvent);
 
             // Assert
+            var spendManagementEvent = await Policy
+               .HandleResult<SpendManagementEvent>(
+                   p => p?.RoutingKey == null)
+               .WaitAndRetryAsync(
+                   TestSettings.PollingSettings!.RetryCount,
+                   _ => TimeSpan.FromMilliseconds(TestSettings.PollingSettings.Delay))
+               .ExecuteAsync(() => _sqlFixture.GetEventAsync(categoryId.ToString()));
+
+            spendManagementEvent.Should().NotBeNull();
+            spendManagementEvent.NameEvent.Should().Be(nameof(UpdateCategoryEvent));
+            spendManagementEvent.RoutingKey.Should().Be(categoryId.ToString());
+            spendManagementEvent.EventBody.Should().NotBeNull();
+
             var categoryUpdated = await Policy
                 .HandleResult<Fixtures.Category>(
                     p => p?.Name != categoryNameUpdated)
