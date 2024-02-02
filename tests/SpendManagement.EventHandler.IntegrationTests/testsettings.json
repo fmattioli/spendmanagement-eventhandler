@@ -7,6 +7,9 @@
     "Database": "spendmanagement",
     "ConnectionString": "mongodb://root:root@localhost:27017/?retryWrites=true&w=majority"
   },
+  "SqlSettings": {
+    "ConnectionString": "Server=127.0.0.1,1433;Database=SpendManagement;User Id=sa;Password=SqlServer2019!;TrustServerCertificate=true"
+  },
   "KafkaSettings": {
     "DependencyName": "infrastructure-SpendManagement-kafka",
     "Broker": "localhost:9094",

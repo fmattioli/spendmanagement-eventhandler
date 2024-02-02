@@ -1,9 +1,6 @@
 ﻿using AutoFixture;
-
 using FluentAssertions;
-
 using Polly;
-
 using SpendManagement.Contracts.V1.Events.CategoryEvents;
 using SpendManagement.EventHandler.IntegrationTests.Configuration;
 using SpendManagement.EventHandler.IntegrationTests.Fixtures;
@@ -11,11 +8,12 @@ using SpendManagement.EventHandler.IntegrationTests.Fixtures;
 namespace SpendManagement.EventHandler.IntegrationTests.Handlers.Category
 {
     [Collection(nameof(SharedFixtureCollection))]
-    public class DeleteCategoryHandlerTests(KafkaFixture kafkaFixture, MongoDBFixture monboDBFixture)
+    public class DeleteCategoryHandlerTests(KafkaFixture kafkaFixture, MongoDBFixture monboDBFixture, SqlFixture sqlFixture)
     {
         private readonly Fixture fixture = new();
         private readonly KafkaFixture _kafkaFixture = kafkaFixture;
         private readonly MongoDBFixture _mongoDBFixture = monboDBFixture;
+        private readonly SqlFixture _sqlFixture = sqlFixture;
 
         [Fact]
         public async Task OnGivenAValidCategoryId_DeleteCategoryEventShouldBeProduced_AndShouldBeConsumedAndCategoryShouldBeDeletedOnDatabase()
@@ -38,6 +36,19 @@ namespace SpendManagement.EventHandler.IntegrationTests.Handlers.Category
             await this._kafkaFixture.ProduceEventAsync(deleteCategoryEvent);
 
             // Assert
+            var spendManagementEvent = await Policy
+                .HandleResult<SpendManagementEvent>(
+                    p => p?.RoutingKey == null)
+                .WaitAndRetryAsync(
+                    TestSettings.PollingSettings!.RetryCount,
+                    _ => TimeSpan.FromMilliseconds(TestSettings.PollingSettings.Delay))
+                .ExecuteAsync(() => _sqlFixture.GetEventAsync(categoryId.ToString()));
+
+            spendManagementEvent.Should().NotBeNull();
+            spendManagementEvent.NameEvent.Should().Be(nameof(DeleteCategoryEvent));
+            spendManagementEvent.RoutingKey.Should().Be(categoryId.ToString());
+            spendManagementEvent.EventBody.Should().NotBeNull();
+
             var categoryInserted = await Policy
                 .HandleResult<Fixtures.Category>(
                     p => p?.Id != null)
