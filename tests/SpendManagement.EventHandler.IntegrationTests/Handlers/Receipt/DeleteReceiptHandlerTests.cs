@@ -30,7 +30,8 @@ namespace SpendManagement.EventHandler.IntegrationTests.Handlers.Receipt
 
             var deleteReceiptEvent = fixture
                 .Build<DeleteReceiptEvent>()
-                .With(x => x.Id, receiptFixture.Id)
+                .With(x => x.Id, receiptId)
+                .With(x => x.RoutingKey, receiptId.ToString())
                 .Create();
 
             // Act
@@ -43,7 +44,7 @@ namespace SpendManagement.EventHandler.IntegrationTests.Handlers.Receipt
                .WaitAndRetryAsync(
                    TestSettings.PollingSettings!.RetryCount,
                    _ => TimeSpan.FromMilliseconds(TestSettings.PollingSettings.Delay))
-               .ExecuteAsync(() => _sqlFixture.GetEventAsync(receiptId.ToString()));
+               .ExecuteAsync(() => SqlFixture.GetEventAsync(receiptId.ToString()));
 
             spendManagementEvent.Should().NotBeNull();
             spendManagementEvent.NameEvent.Should().Be(nameof(DeleteReceiptEvent));

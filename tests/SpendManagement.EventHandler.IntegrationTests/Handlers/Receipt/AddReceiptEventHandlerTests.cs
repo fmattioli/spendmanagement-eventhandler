@@ -49,7 +49,7 @@ namespace SpendManagement.EventHandler.IntegrationTests.Handlers.Receipt
                .WaitAndRetryAsync(
                    TestSettings.PollingSettings!.RetryCount,
                    _ => TimeSpan.FromMilliseconds(TestSettings.PollingSettings.Delay))
-               .ExecuteAsync(() => _sqlFixture.GetEventAsync(receiptId.ToString()));
+               .ExecuteAsync(() => SqlFixture.GetEventAsync(receiptId.ToString()));
 
             spendManagementEvent.Should().NotBeNull();
             spendManagementEvent.NameEvent.Should().Be(nameof(CreatedReceiptEvent));
