@@ -54,7 +54,7 @@ namespace SpendManagement.EventHandler.IntegrationTests.Handlers.Category
                 .WaitAndRetryAsync(
                     TestSettings.PollingSettings!.RetryCount,
                     _ => TimeSpan.FromMilliseconds(TestSettings.PollingSettings.Delay))
-                .ExecuteAsync(() => _sqlFixture.GetEventAsync(categoryId.ToString()));
+                .ExecuteAsync(() => SqlFixture.GetEventAsync(categoryId.ToString()));
 
             spendManagementEvent.Should().NotBeNull();
             spendManagementEvent.NameEvent.Should().Be(nameof(CreateCategoryEvent));

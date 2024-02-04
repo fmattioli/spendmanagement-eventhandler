@@ -6,14 +6,11 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
 {
     public class SqlFixture : IAsyncLifetime
     {
-        private readonly List<string> routingKeys = [];
-        
-        public async Task<SpendManagementEvent> GetEventAsync(string eventId)
+        public static async Task<SpendManagementEvent> GetEventAsync(string eventId)
         {
             using var connection = new SqlConnection(TestSettings.SqlSettings?.ConnectionString);
             {
                 var @event = await connection.QueryFirstOrDefaultAsync<SpendManagementEvent>("SELECT * FROM SpendManagementEvents WHERE RoutingKey = @id", new { id = eventId });
-                routingKeys.Add(eventId);
                 return @event!;
             }
         }
@@ -22,12 +19,8 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
 
         public async Task DisposeAsync()
         {
-            if (routingKeys.Count != 0)
-            {
-                using var connection = new SqlConnection(TestSettings.SqlSettings?.ConnectionString);
-                await connection.ExecuteAsync("DELETE FROM SpendManagementEvents WHERE RoutingKey in @ids", new { ids = routingKeys.Select(x => x) });
-                await connection.ExecuteAsync("DELETE FROM SpendManagementCommands WHERE RoutingKey in @ids", new { ids = routingKeys.Select(x => x) });
-            }
+            using var connection = new SqlConnection(TestSettings.SqlSettings?.ConnectionString);
+            await connection.ExecuteAsync("DELETE FROM SpendManagementEvents");
         }
     }
 
