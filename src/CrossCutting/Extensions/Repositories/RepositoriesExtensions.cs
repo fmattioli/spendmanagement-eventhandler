@@ -9,6 +9,7 @@ namespace CrossCutting.Extensions.Repositories
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IReceiptRepository, ReceiptRepository>();
+            services.AddScoped<IRecurringReceiptRepository, RecurringReceiptRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ISpendManagementEventRepository, SpendManagementEventRepository>();
             return services;

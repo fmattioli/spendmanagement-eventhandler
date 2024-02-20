@@ -17,7 +17,7 @@ namespace CrossCutting.Extensions.HealthChecks
             services.AddHealthChecks()
                 .AddKafka(configKafka, name: "Kafka")
                 .AddSqlServer(settings.SqlSettings!.ConnectionString!, name: "SqlServer", tags: tags)
-                .AddMongoDb(settings.MongoSettings?.ConnectionString ?? "", name: "MongoDB", tags: tags);
+                .AddMongoDb(settings.MongoSettings?.ConnectionString!, name: "MongoDB", tags: tags);
 
             services
                 .AddHealthChecksUI()

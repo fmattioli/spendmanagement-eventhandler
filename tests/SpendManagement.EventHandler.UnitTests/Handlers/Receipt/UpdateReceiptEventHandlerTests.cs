@@ -12,18 +12,17 @@ using System.Linq.Expressions;
 
 namespace SpendManagement.EventHandler.UnitTests.Handlers.Receipt
 {
-    public class UpdateReceiptEventHandler
+    public class UpdateReceiptEventHandlerTests
     {
         private readonly ReceiptEventHandler _receiptEventHandler;
         private readonly Mock<IReceiptRepository> _receiptRepository = new();
         private readonly Fixture _fixture = new();
         private readonly Mock<IMessageContext> _messageContext = new();
-        private readonly Mock<IUnitOfWork> _unitOfWork = new();
         private readonly Mock<IDbTransaction> _dbTransactionObject = new();
         private readonly Mock<ILogger> _loggerObjetct = new();
         private readonly Mock<ISpendManagementEventRepository> _eventRepository = new();
 
-        public UpdateReceiptEventHandler()
+        public UpdateReceiptEventHandlerTests()
         {
             var unitOfWork = new UnitOfWork(_dbTransactionObject.Object, _loggerObjetct.Object, _eventRepository.Object);
             _receiptEventHandler = new ReceiptEventHandler(_receiptRepository!.Object, unitOfWork);

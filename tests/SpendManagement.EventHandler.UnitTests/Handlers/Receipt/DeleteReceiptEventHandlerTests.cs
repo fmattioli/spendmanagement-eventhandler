@@ -12,7 +12,7 @@ using System.Linq.Expressions;
 
 namespace SpendManagement.EventHandler.UnitTests.Handlers.Receipt
 {
-    public class DeleteReceiptEventHandler
+    public class DeleteReceiptEventHandlerTests
     {
         private readonly ReceiptEventHandler _receiptEventHandler;
         private readonly Mock<IReceiptRepository> _receiptRepository = new();
@@ -21,7 +21,7 @@ namespace SpendManagement.EventHandler.UnitTests.Handlers.Receipt
         private readonly Mock<ISpendManagementEventRepository> _eventRepository = new();
         private readonly Mock<IDbTransaction> _dbTransactionObject = new();
         private readonly Mock<ILogger> _loggerObjetct = new();
-        public DeleteReceiptEventHandler()
+        public DeleteReceiptEventHandlerTests()
         {
             var unitOfWork = new UnitOfWork(_dbTransactionObject.Object, _loggerObjetct.Object, _eventRepository.Object);
             _receiptEventHandler = new ReceiptEventHandler(_receiptRepository!.Object, unitOfWork);
