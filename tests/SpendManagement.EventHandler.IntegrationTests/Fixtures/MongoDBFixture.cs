@@ -9,6 +9,7 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
 
         private readonly List<Guid> categoryIds = [];
         private readonly List<Guid> receiptIds = [];
+        private readonly List<Guid> recurringReceiptIds = [];
 
         public MongoDBFixture()
         {
@@ -54,11 +55,23 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
             this.receiptIds.Add(id);
         }
 
+        public void AddRecurringReceiptToCleanUp(Guid id)
+        {
+            this.recurringReceiptIds.Add(id);
+        }
+
         public async Task InsertReceiptAsync(Receipt receipt)
         {
             var collection = this.database.GetCollection<Receipt>("Receipts");
             await collection.InsertOneAsync(receipt);
             AddReceiptToCleanUp(receipt.Id);
+        }
+
+        public async Task InsertRecurringReceiptAsync(RecurringReceipt recurringReceipt)
+        {
+            var collection = this.database.GetCollection<RecurringReceipt>("RecurringReceipts");
+            await collection.InsertOneAsync(recurringReceipt);
+            AddReceiptToCleanUp(recurringReceipt.Id);
         }
 
         public async Task<Category> FindCategoryAsync(Guid categoryId)
@@ -75,6 +88,13 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
             return receipt.FirstOrDefault();
         }
 
+        public async Task<RecurringReceipt> FindRecurringReceiptAsync(Guid recurringReceiptId)
+        {
+            var collection = this.database.GetCollection<RecurringReceipt>("Receipts");
+            var receipt = await collection.FindAsync(receipt => receipt.Id == recurringReceiptId);
+            return receipt.FirstOrDefault();
+        }
+
         public async Task InsertCategoryAsync(Category category)
         {
             AddCategoryToCleanUp(category.Id);
@@ -88,4 +108,6 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
     public record Receipt(Guid Id, Guid CategoryId, string? EstablishmentName, DateTime ReceiptDate, IEnumerable<ReceiptItem>? ReceiptItems, decimal Discount, decimal Total);
 
     public record ReceiptItem(Guid Id, string ItemName, short Quantity, decimal ItemPrice, decimal TotalPrice, string Observation, decimal ItemDiscount);
+
+    public record RecurringReceipt(Guid Id, Guid CategoryId, string? EstablishmentName, DateTime DateInitialRecurrence, DateTime DateEndRecurrence, decimal RecurrenceTotalPrice, string? Observation);
 }
