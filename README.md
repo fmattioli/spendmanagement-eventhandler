@@ -9,6 +9,7 @@ This application has the purpose to read events from a topic and save it on a No
 > https://github.com/fmattioli/spendmanagement-identity 
 
 # Related packages
+> https://github.com/fmattioli/spendmanagement-webcontracts <br/>
 > https://github.com/fmattioli/spendmanagement-contracts <br/>
 > https://github.com/fmattioli/spendmanagement-topics
 
