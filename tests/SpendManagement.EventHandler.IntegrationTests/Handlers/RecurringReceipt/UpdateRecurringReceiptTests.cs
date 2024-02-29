@@ -25,6 +25,7 @@ namespace SpendManagement.EventHandler.IntegrationTests.Handlers.RecurringReceip
 
             var recurringReceipt = fixture
               .Build<Fixtures.RecurringReceipt>()
+              .With(x => x.Id, receiptId)
               .Create();
 
             await _mongoDBFixture.InsertRecurringReceiptAsync(recurringReceipt);
@@ -61,7 +62,7 @@ namespace SpendManagement.EventHandler.IntegrationTests.Handlers.RecurringReceip
 
             spendManagementEvent.NameEvent
                 .Should()
-                .Be(nameof(UpdateReceiptEvent));
+                .Be(nameof(UpdateRecurringReceiptEvent));
 
             spendManagementEvent.RoutingKey
                 .Should()

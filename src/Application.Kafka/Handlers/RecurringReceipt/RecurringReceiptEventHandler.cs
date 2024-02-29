@@ -44,7 +44,7 @@ namespace Application.Kafka.Handlers.RecurringReceipt
 
         public async Task Handle(IMessageContext context, DeleteRecurringReceiptEvent message)
         {
-            var filter = new FilterDefinitionBuilder<Domain.Entities.Receipt>()
+            var filter = new FilterDefinitionBuilder<Domain.Entities.RecurringReceipt>()
               .Where(ev => ev.Id == message.Id);
 
             await _recurringReceiptRepository.DeleteAsync(_ => filter.Inject());

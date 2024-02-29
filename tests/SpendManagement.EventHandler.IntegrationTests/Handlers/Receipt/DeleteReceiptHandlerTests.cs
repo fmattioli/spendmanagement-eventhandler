@@ -51,13 +51,7 @@ namespace SpendManagement.EventHandler.IntegrationTests.Handlers.Receipt
             spendManagementEvent.RoutingKey.Should().Be(receiptId.ToString());
             spendManagementEvent.EventBody.Should().NotBeNull();
 
-            var receiptInserted = await Policy
-                .HandleResult<Fixtures.Receipt>(
-                    p => p?.Id != null)
-                .WaitAndRetryAsync(
-                    TestSettings.PollingSettings!.RetryCount,
-                    _ => TimeSpan.FromMilliseconds(TestSettings.PollingSettings.Delay))
-                .ExecuteAsync(() => _mongoDBFixture.FindReceiptAsync(receiptFixture.Id));
+            var receiptInserted = await _mongoDBFixture.FindReceiptAsync(receiptFixture.Id);
 
             receiptInserted.Should().BeNull();
         }
