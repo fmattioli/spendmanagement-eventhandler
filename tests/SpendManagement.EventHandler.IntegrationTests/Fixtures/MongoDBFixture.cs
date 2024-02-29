@@ -90,7 +90,7 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
 
         public async Task<RecurringReceipt> FindRecurringReceiptAsync(Guid recurringReceiptId)
         {
-            var collection = this.database.GetCollection<RecurringReceipt>("Receipts");
+            var collection = this.database.GetCollection<RecurringReceipt>("RecurringReceipts");
             var receipt = await collection.FindAsync(receipt => receipt.Id == recurringReceiptId);
             return receipt.FirstOrDefault();
         }

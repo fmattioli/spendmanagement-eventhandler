@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Polly;
 using SpendManagement.Contracts.V1.Events.ReceiptEvents;
+using SpendManagement.Contracts.V1.Events.RecurringReceiptEvents;
 using SpendManagement.EventHandler.IntegrationTests.Configuration;
 using SpendManagement.EventHandler.IntegrationTests.Fixtures;
 
@@ -29,7 +30,7 @@ namespace SpendManagement.EventHandler.IntegrationTests.Handlers.RecurringReceip
             await _mongoDBFixture.InsertRecurringReceiptAsync(recurringReceiptFixture);
 
             var deleteReceiptEvent = fixture
-                .Build<DeleteReceiptEvent>()
+                .Build<DeleteRecurringReceiptEvent>()
                 .With(x => x.Id, receiptId)
                 .With(x => x.RoutingKey, receiptId.ToString())
                 .Create();
@@ -52,7 +53,7 @@ namespace SpendManagement.EventHandler.IntegrationTests.Handlers.RecurringReceip
             
             spendManagementEvent.NameEvent
                 .Should()
-                .Be(nameof(DeleteReceiptEvent));
+                .Be(nameof(DeleteRecurringReceiptEvent));
 
             spendManagementEvent.RoutingKey
                 .Should()
