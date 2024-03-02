@@ -1,7 +1,6 @@
 ﻿using AutoFixture;
 using FluentAssertions;
 using Polly;
-using SpendManagement.Contracts.V1.Events.ReceiptEvents;
 using SpendManagement.Contracts.V1.Events.RecurringReceiptEvents;
 using SpendManagement.EventHandler.IntegrationTests.Configuration;
 using SpendManagement.EventHandler.IntegrationTests.Fixtures;
