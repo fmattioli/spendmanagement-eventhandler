@@ -12,7 +12,6 @@ services:
     image: spendmanagement_eventhandler:${APP_VERSION}
     environment:
       - APP_VERSION=${APP_VERSION}
-      - ASPNETCORE_ENVIRONMENT=Docker
     ports:
       - 8078:8080
     networks:
