@@ -4,6 +4,6 @@ namespace Domain.Interfaces
 {
     public interface ISpendManagementEventRepository
     {
-        Task<Guid> Add(SpendManagementEvent spendManagementEvent);
+        Task Add(SpendManagementEvent spendManagementEvent);
     }
 }

@@ -78,10 +78,10 @@ namespace CrossCutting.Extensions.Kafka
                      .Topics(KafkaTopics.Events.GetReceiptEvents(settings!.Environment))
                      .WithGroupId("Receipts-Events")
                      .WithName("Receipt-Events")
-                     .WithBufferSize(settings?.BufferSize ?? 0)
-                     .WithWorkersCount(settings?.WorkerCount ?? 0)
+                     .WithBufferSize(settings.BufferSize)
+                     .WithWorkersCount(settings.WorkerCount)
                      .WithAutoOffsetReset(AutoOffsetReset.Latest)
-                     .WithInitialState(Enum.Parse<ConsumerInitialState>(settings?.ConsumerInitialState ?? "Running"))
+                     .WithInitialState(Enum.Parse<ConsumerInitialState>(settings.ConsumerInitialState ?? "Running"))
                      .AddMiddlewares(
                         middlewares =>
                             middlewares
