@@ -1,4 +1,5 @@
 ﻿using Crosscutting.Models;
+using CrossCutting.Extensions.Configuration;
 using CrossCutting.Extensions.HealthChecks;
 using CrossCutting.Extensions.Kafka;
 using CrossCutting.Extensions.Logging;
@@ -16,7 +17,7 @@ builder.Configuration
     .AddJsonFile($"appsettings.{enviroment}.json", true, reloadOnChange: true)
     .AddEnvironmentVariables();
 
-var applicationSettings = builder.Configuration.GetSection("Settings").Get<Settings>();
+var applicationSettings = builder.Configuration.GetApplicationSettings(builder.Environment);
 
 builder.Logging
     .ClearProviders()
@@ -24,7 +25,7 @@ builder.Logging
     .AddFilter("Microsoft", LogLevel.Error)
     .AddFilter("Microsoft", LogLevel.Critical);
 
-builder.Services.AddSingleton<ISettings>(applicationSettings ?? throw new Exception("Error while reading app settings."));
+builder.Services.AddSingleton<ISettings>(applicationSettings);
 
 builder.Services
     .AddTracing(applicationSettings.TracingSettings)
@@ -40,5 +41,5 @@ var app = builder.Build();
 app.ShowKafkaDashboard();
 app.UseHealthCheckers();
 app.MapGet("/", () => "Hello! I'm working. My work is only reading events from a kafka topic, process it, make some logic and save it on a NoSQL database. \n" +
-                      "Check my health to understand if everything is okay." + applicationSettings.KafkaSettings!.Sasl_UserName);
+                      "Check my health to understand if everything is okay." + applicationSettings.KafkaSettings!.Sasl_Username);
 app.Run();

@@ -1,6 +1,6 @@
 ﻿using Dapper;
+using Npgsql;
 using SpendManagement.EventHandler.IntegrationTests.Configuration;
-using System.Data.SqlClient;
 
 namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
 {
@@ -8,18 +8,16 @@ namespace SpendManagement.EventHandler.IntegrationTests.Fixtures
     {
         public static async Task<SpendManagementEvent> GetEventAsync(string eventId)
         {
-            using var connection = new SqlConnection(TestSettings.SqlSettings?.ConnectionString);
-            {
-                var @event = await connection.QueryFirstOrDefaultAsync<SpendManagementEvent>("SELECT * FROM SpendManagementEvents WHERE RoutingKey = @id", new { id = eventId });
-                return @event!;
-            }
+            using var connection = new NpgsqlConnection(TestSettings.SqlSettings?.ConnectionString ?? throw new Exception("ConnectionString not provided."));
+            var @event = await connection.QueryFirstOrDefaultAsync<SpendManagementEvent>("SELECT * FROM SpendManagementEvents WHERE RoutingKey = @id", new { id = eventId });
+            return @event!;
         }
 
         public Task InitializeAsync() => Task.CompletedTask;
 
         public async Task DisposeAsync()
         {
-            using var connection = new SqlConnection(TestSettings.SqlSettings?.ConnectionString);
+            using var connection = new NpgsqlConnection(TestSettings.SqlSettings?.ConnectionString);
             await connection.ExecuteAsync("DELETE FROM SpendManagementEvents");
         }
     }

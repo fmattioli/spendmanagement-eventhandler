@@ -52,13 +52,13 @@ namespace CrossCutting.Extensions.Kafka
             {
                 builder
                     .WithBrokers(settings.Sasl_Brokers)
-                    .WithSecurityInformation(si =>
+                    .WithSecurityInformation(information =>
                     {
-                        si.SecurityProtocol = SecurityProtocol.SaslSsl;
-                        si.SaslUsername = settings.Sasl_UserName;
-                        si.SaslPassword = settings.Sasl_Password;
-                        si.SaslMechanism = SaslMechanism.Plain;
-                        si.SslCaLocation = string.Empty;
+                        information.SaslMechanism = SaslMechanism.ScramSha256;
+                        information.SaslUsername = settings.Sasl_Username;
+                        information.SaslPassword = settings.Sasl_Password;
+                        information.SecurityProtocol = SecurityProtocol.SaslSsl;
+                        information.EnableSslCertificateVerification = true;
                     });
             }
             else
