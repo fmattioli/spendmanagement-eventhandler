@@ -26,7 +26,7 @@ namespace CrossCutting.Extensions.Kafka
                     .AddConsumers(kafkaSettings)
                     )
                 );
-            services.AddHostedService<KafkaBusHostedService>();
+
             return services;
         }
 

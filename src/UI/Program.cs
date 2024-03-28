@@ -7,6 +7,7 @@ using CrossCutting.Extensions.Mongo;
 using CrossCutting.Extensions.Repositories;
 using CrossCutting.Extensions.Tracing;
 using CrossCutting.Extensions.UnitOfWork;
+using KafkaFlow;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,4 +43,7 @@ app.ShowKafkaDashboard();
 app.UseHealthCheckers();
 app.MapGet("/", () => "Hello! I'm working. My work is only reading events from a kafka topic, process it, make some logic and save it on a NoSQL database. \n" +
                       "Check my health to understand if everything is okay." + applicationSettings.KafkaSettings!.Sasl_Username);
+
+var kafkaBus = app.Services.CreateKafkaBus();
+await kafkaBus.StartAsync();
 app.Run();
